@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бронирование отелей</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f2f2f7;
+        margin: 0; padding: 0;
+    }
+    .container {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    .input-group {
+        margin: 15px 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .input-group label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+    }
+    .input-group input, .input-group select {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+    .hotel-card {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 10px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        display: flex;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .hotel-card:hover {
+        transform: scale(1.02);
+    }
+    .hotel-card img {
+        width: 120px;
+        height: 80px;
+        object-fit: cover;
+    }
+    .hotel-info {
+        padding: 10px;
+        flex: 1;
+    }
+    .hotel-info h3 {
+        margin: 0 0 5px 0;
+        font-size: 18px;
+        color: #333;
+    }
+    .hotel-info p {
+        margin: 0;
+        color: #777;
+        font-size: 14px;
+    }
+    .book-btn {
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .book-btn:hover {
+        background: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Бронирование отеля</h2>
+
+    <div class="input-group">
+        <label for="city">Город</label>
+        <input id="city" placeholder="Введите город">
+    </div>
+
+    <div class="input-group">
+        <label for="in">Заезд</label>
+        <input type="date" id="in">
+    </div>
+
+    <div class="input-group">
+        <label for="out">Выезд</label>
+        <input type="date" id="out">
+    </div>
+
+    <h3>Выберите отель:</h3>
+    <div class="hotel-card" onclick="selectHotel('Hotel Lux')">
+        <img src="https://picsum.photos/120/80?random=1" alt="Hotel Lux">
+        <div class="hotel-info">
+            <h3>Hotel Lux</h3>
+            <p>⭐⭐⭐⭐ • 5 км от центра</p>
+        </div>
+    </div>
+    <div class="hotel-card" onclick="selectHotel('Grand Palace')">
+        <img src="https://picsum.photos/120/80?random=2" alt="Grand Palace">
+        <div class="hotel-info">
+            <h3>Grand Palace</h3>
+            <p>⭐⭐⭐⭐⭐ • 2 км от центра</p>
+        </div>
+    </div>
+    <div class="hotel-card" onclick="selectHotel('Sea View')">
+        <img src="https://picsum.photos/120/80?random=3" alt="Sea View">
+        <div class="hotel-info">
+            <h3>Sea View</h3>
+            <p>⭐⭐⭐ • на берегу моря</p>
+        </div>
+    </div>
+
+    <button class="book-btn" onclick="send()" id="bookBtn">Забронировать</button>
+</div>
+
+<script>
+let selectedHotel = null;
+
+function selectHotel(name) {
+    selectedHotel = name;
+    document.querySelectorAll('.hotel-card').forEach(card => card.style.border = '1px solid #ddd');
+    event.currentTarget.style.border = '2px solid #4CAF50';
+}
+
+function send() {
+    if(!selectedHotel) {
+        alert("Выберите отель!");
+        return;
+    }
+    const data = {
+        city: document.getElementById("city").value,
+        checkin: document.getElementById("in").value,
+        checkout: document.getElementById("out").value,
+        hotel: selectedHotel
+    };
+    Telegram.WebApp.sendData(JSON.stringify(data));
+}
+</script>
+
+</body>
+</html>
